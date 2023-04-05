@@ -4,11 +4,15 @@ import Menu from './Menu';
 import Quiz from './Quiz';
 
 const Game = () => {
-  const [gameState, setGameState] = useState('paused');
+  const [gameState, setGameState] = useState('xx'); // zmienic na init
 
   return (
     <>
-      {gameState === 'paused' ? <Menu setGameState={setGameState} /> : <Quiz />}
+      {gameState === 'paused' || gameState === 'init' ? (
+        <Menu setGameState={setGameState} />
+      ) : (
+        <Quiz />
+      )}
     </>
   );
 };

@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import '../styles/menu.scss';
 
-interface Props {
+interface IProps {
   setGameState: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Menu: FC<Props> = ({ setGameState }) => {
+const Menu: FC<IProps> = ({ setGameState }) => {
   const handlePlayClick = () => {
     setGameState('play');
   };
