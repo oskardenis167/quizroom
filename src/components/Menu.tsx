@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { FC } from 'react';
 import '../styles/menu.scss';
 
-const menu = (
-  <div className="menu">
-    <a href="" className="menu__item">
-      Play
-    </a>
-    <a href="" className="menu__item">
-      Scores
-    </a>
-  </div>
-);
+interface Props {
+  setGameState: React.Dispatch<React.SetStateAction<string>>;
+}
 
-const Menu = () => {
-  return <>{menu}</>;
+const Menu: FC<Props> = ({ setGameState }) => {
+  const handlePlayClick = () => {
+    setGameState('play');
+  };
+
+  return (
+    <>
+      <div className="menu">
+        <button onClick={handlePlayClick} className="menu__item">
+          Play
+        </button>
+        <button className="menu__item">Scores</button>
+      </div>
+    </>
+  );
 };
 
 export default Menu;
