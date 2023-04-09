@@ -12,7 +12,7 @@ const QuizButton: FC<IProps> = ({ value, setAnswer }) => {
 
   return (
     <button onClick={handleQuizButton} className="quiz__button">
-      {decodeURIComponent(value)}
+      {value}
     </button>
   );
 };

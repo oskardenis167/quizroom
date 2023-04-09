@@ -1,0 +1,22 @@
+@mixin borderClick {
+  @keyframes borderClick {
+    0% {
+      box-shadow: none;
+    }
+    100% {
+      box-shadow: 0 0 0 5px white, 0 0 0 10px black;
+    }
+  }
+}
+
+@mixin animationBorderClickTrigger {
+  animation: borderClick 0.15s both;
+}
+
+@mixin animationLetterSpacing($value) {
+  letter-spacing: $value;
+}
+
+@mixin fontSizer($sizeAdd) {
+  font-size: $question-button-font-size + $sizeAdd;
+}

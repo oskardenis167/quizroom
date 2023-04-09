@@ -22,8 +22,8 @@ const Game = () => {
             setQuestionsCount={setQuestionsCount}
           />
         );
-      case EModes.paused:
-        return <Menu setGameState={setGameState} mode={EModes.paused} />;
+      // case EModes.paused:
+      //   return <Menu setGameState={setGameState} mode={EModes.paused} />;
       case EModes.play:
         return (
           <Quiz

@@ -10,9 +10,23 @@ const QuizButtons: FC<IProps> = ({ answers, setAnswer }) => {
     }
   };
 
-  shuffleArray(answers);
+  const decodeAnswers = answers.map((answer) => decodeURIComponent(answer));
 
-  const buttons = answers.map((answer) => (
+  if (
+    decodeAnswers[0].toLowerCase() == 'true' ||
+    decodeAnswers[0].toLowerCase() == 'false'
+  ) {
+    if (decodeAnswers[0].toLowerCase() == 'false') {
+      [decodeAnswers[0], decodeAnswers[1]] = [
+        decodeAnswers[1],
+        decodeAnswers[0],
+      ];
+    }
+  } else {
+    shuffleArray(decodeAnswers);
+  }
+
+  const buttons = decodeAnswers.map((answer) => (
     <QuizButton key={answer} value={answer} setAnswer={setAnswer} />
   ));
   return <div className="quiz__buttons">{buttons}</div>;

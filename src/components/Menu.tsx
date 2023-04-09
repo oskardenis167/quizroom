@@ -31,28 +31,28 @@ const Menu: FC<IProps> = ({
             setQuestionsCount={setQuestionsCount}
             questionsCount={questionsCount}
           />
-          <MenuButton
+          {/* <MenuButton
             setGameState={setGameState}
             mode={EModes.scores}
             value="Scores"
-          />
+          /> */}
         </>
       );
-    } else if (mode === EModes.paused) {
-      return (
-        <>
-          <MenuButton
-            setGameState={setGameState}
-            mode={EModes.play}
-            value="Continue"
-          />
-          <MenuButton
-            setGameState={setGameState}
-            mode={EModes.init}
-            value="Exit"
-          />
-        </>
-      );
+      // } else if (mode === EModes.paused) {
+      //   return (
+      //     <>
+      //       <MenuButton
+      //         setGameState={setGameState}
+      //         mode={EModes.play}
+      //         value="Continue"
+      //       />
+      //       <MenuButton
+      //         setGameState={setGameState}
+      //         mode={EModes.init}
+      //         value="Exit"
+      //       />
+      //     </>
+      //   );
     }
   };
 

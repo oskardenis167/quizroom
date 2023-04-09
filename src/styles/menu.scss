@@ -1,13 +1,7 @@
 @import 'variables';
+@import 'mixins';
 
-@keyframes borderClick {
-  0% {
-    box-shadow: none;
-  }
-  100% {
-    box-shadow: 0 0 0 5px white, 0 0 0 10px black;
-  }
-}
+@include borderClick;
 
 .menu {
   position: absolute;
@@ -35,12 +29,12 @@
     &:hover {
       background-color: #000;
       color: #fff;
-      letter-spacing: 5px;
+      @include animationLetterSpacing($letter-spacing-hover);
     }
 
     &:active {
-      letter-spacing: 15px;
-      animation: borderClick 0.15s both;
+      @include animationLetterSpacing($letter-spacing-active);
+      @include animationBorderClickTrigger;
     }
   }
 }
@@ -73,12 +67,13 @@
     &:hover {
       background-color: #000;
       color: #fff;
-      font-size: $question-button-font-size + 15px;
+      @include fontSizer(15px);
     }
 
     &:active {
-      font-size: $question-button-font-size + 35px;
-      animation: borderClick 0.15s both;
+      // font-size: $question-button-font-size + 35px;
+      @include fontSizer(35px);
+      @include animationBorderClickTrigger;
     }
   }
 

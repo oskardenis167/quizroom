@@ -1,6 +1,6 @@
 export enum EModes {
   init = 'init',
-  paused = 'paused',
+  // paused = 'paused',
   play = 'play',
-  scores = 'scores',
+  // scores = 'scores',
 }

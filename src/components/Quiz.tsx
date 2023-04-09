@@ -5,6 +5,8 @@ import { IQuizResponse } from './Interfaces/QuizResponse';
 import QuizButtons from './QuizButtons';
 import '../styles/quiz.scss';
 import Pause from './Pause';
+import QuizPoints from './QuizPoints';
+import QuizTime from './QuizTime';
 
 interface IProps {
   setGameState: React.Dispatch<React.SetStateAction<EModes>>;
@@ -26,6 +28,7 @@ const Quiz: FC<IProps> = ({
   // const [questionNumber, setQuestionNumber] = useState(0);
   const [answer, setAnswer] = useState<null | string>(null);
   const [pause, setPause] = useState(false);
+  const [points, setPoints] = useState(0);
 
   const API = `https://opentdb.com/api.php?amount=${questionsCount}&category=9&&encode=url3986`;
 
@@ -65,9 +68,14 @@ const Quiz: FC<IProps> = ({
   useEffect(() => {
     if (answer && data) {
       // console.log(answer);
-      answer === data[questionNumber].correct_answer
-        ? alert('wygrana')
-        : alert('przegrana');
+      if (answer === data[questionNumber].correct_answer) {
+        alert('dobrze');
+        setPoints((prev) => prev + 1);
+      } else {
+        alert('zle');
+      }
+
+      setAnswer(null);
 
       if (questionNumber === questionsCount - 1) {
         alert('end');
@@ -78,7 +86,9 @@ const Quiz: FC<IProps> = ({
     }
   }, [answer]);
 
-  console.log(data);
+  // useEffect(() => {
+  //   console.log('xd');
+  // }, [questionNumber]);
 
   const quizEl = (
     <>
@@ -96,26 +106,26 @@ const Quiz: FC<IProps> = ({
           <p className={`quiz__difficulty ${data[questionNumber].difficulty}`}>
             {decodeURIComponent(data[questionNumber].difficulty)}
           </p>
-          {/* <p>{data[questionNumber].correct_answer}</p> */}
+          <QuizButtons
+            setAnswer={setAnswer}
+            answers={[
+              data[questionNumber].correct_answer,
+              ...data[questionNumber].incorrect_answers,
+            ]}
+          />
+          <QuizPoints points={points} questionsCount={questionsCount} />
+          {pause && <Pause setPause={setPause} setGameState={setGameState} />}
+
+          <QuizTime
+            pause={pause}
+            setAnswer={setAnswer}
+            answer={answer}
+            questionNumber={questionNumber}
+          />
         </>
       )}
-
-      {data && (
-        <QuizButtons
-          setAnswer={setAnswer}
-          answers={[
-            data[questionNumber].correct_answer,
-            ...data[questionNumber].incorrect_answers,
-          ]}
-        />
-      )}
-      {pause && <Pause setPause={setPause} setGameState={setGameState} />}
     </>
   );
-
-  const x = pause ? 'blur' : '';
-
-  console.log(x);
 
   return <div className="quiz">{quizEl}</div>;
 };
