@@ -4,6 +4,7 @@ import { EModes } from './Enums/EModes';
 import { IQuizResponse } from './Interfaces/QuizResponse';
 import QuizButtons from './QuizButtons';
 import '../styles/quiz.scss';
+import Pause from './Pause';
 
 interface IProps {
   setGameState: React.Dispatch<React.SetStateAction<EModes>>;
@@ -24,6 +25,7 @@ const Quiz: FC<IProps> = ({
   const [loading, setLoading] = useState(true);
   // const [questionNumber, setQuestionNumber] = useState(0);
   const [answer, setAnswer] = useState<null | string>(null);
+  const [pause, setPause] = useState(false);
 
   const API = `https://opentdb.com/api.php?amount=${questionsCount}&category=9&&encode=url3986`;
 
@@ -31,9 +33,10 @@ const Quiz: FC<IProps> = ({
 
   const handleEscClick = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
-      setGameState(EModes.paused);
+      setPause((prev) => !prev);
     }
   };
+  // console.log(pause);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -75,7 +78,7 @@ const Quiz: FC<IProps> = ({
     }
   }, [answer]);
 
-  // console.log(data);
+  console.log(data);
 
   const quizEl = (
     <>
@@ -106,8 +109,13 @@ const Quiz: FC<IProps> = ({
           ]}
         />
       )}
+      {pause && <Pause setPause={setPause} setGameState={setGameState} />}
     </>
   );
+
+  const x = pause ? 'blur' : '';
+
+  console.log(x);
 
   return <div className="quiz">{quizEl}</div>;
 };

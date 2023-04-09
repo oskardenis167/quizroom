@@ -18,42 +18,47 @@ const Menu: FC<IProps> = ({
   questionsCount,
   setQuestionsCount,
 }) => {
-  const handleChangeQuestionsCount = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (setQuestionsCount) {
-      if (parseInt(event.target.value) > 20) {
-        alert('Can not do over 20 question in one game');
-      } else if (parseInt(event.target.value) < 1) {
-        alert('Set minimum 1 question to solve quiz');
-      } else {
-        setQuestionsCount(parseInt(event.target.value));
-      }
+  const menuSelect = () => {
+    if (mode === EModes.init) {
+      return (
+        <>
+          <MenuButton
+            setGameState={setGameState}
+            mode={EModes.play}
+            value="Play"
+          />
+          <MenuQuestion
+            setQuestionsCount={setQuestionsCount}
+            questionsCount={questionsCount}
+          />
+          <MenuButton
+            setGameState={setGameState}
+            mode={EModes.scores}
+            value="Scores"
+          />
+        </>
+      );
+    } else if (mode === EModes.paused) {
+      return (
+        <>
+          <MenuButton
+            setGameState={setGameState}
+            mode={EModes.play}
+            value="Continue"
+          />
+          <MenuButton
+            setGameState={setGameState}
+            mode={EModes.init}
+            value="Exit"
+          />
+        </>
+      );
     }
   };
 
   return (
     <>
-      <div className="menu">
-        <MenuButton
-          setGameState={setGameState}
-          mode={EModes.play}
-          value="Play"
-        />
-        {mode === EModes.init && (
-          <>
-            <MenuQuestion
-              setQuestionsCount={setQuestionsCount}
-              questionsCount={questionsCount}
-            />
-          </>
-        )}
-        <MenuButton
-          setGameState={setGameState}
-          mode={EModes.scores}
-          value="Scores"
-        />
-      </div>
+      <div className="menu">{menuSelect()}</div>
     </>
   );
 };
