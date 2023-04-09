@@ -1,5 +1,14 @@
 @import 'variables';
 
+@keyframes borderClick {
+  0% {
+    box-shadow: none;
+  }
+  100% {
+    box-shadow: 0 0 0 5px white, 0 0 0 10px black;
+  }
+}
+
 .menu {
   position: absolute;
   top: 50%;
@@ -31,6 +40,7 @@
 
     &:active {
       letter-spacing: 15px;
+      animation: borderClick 0.15s both;
     }
   }
 }
@@ -68,6 +78,7 @@
 
     &:active {
       font-size: $question-button-font-size + 35px;
+      animation: borderClick 0.15s both;
     }
   }
 
