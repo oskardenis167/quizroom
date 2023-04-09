@@ -6,7 +6,7 @@ const QuizButtons: FC<IProps> = ({ answers, setAnswer }) => {
   const buttons = answers.map((answer) => (
     <QuizButton key={answer} value={answer} setAnswer={setAnswer} />
   ));
-  return <>{buttons}</>;
+  return <div className="quiz__buttons">{buttons}</div>;
 };
 
 export default QuizButtons;

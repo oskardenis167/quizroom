@@ -12,6 +12,7 @@ const Game = () => {
   const gameMode = (gameState: string) => {
     switch (gameState) {
       case EModes.init:
+        if (questionNumber !== 0) setQuestionNumber(0);
         return (
           <Menu
             setGameState={setGameState}
