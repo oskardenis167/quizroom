@@ -1,22 +1,32 @@
 import axios, { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { EModes } from './Enums/EModes';
 import { IQuizResponse } from './Interfaces/QuizResponse';
+import QuizButtons from './QuizButtons';
 
-const API = 'https://opentdb.com/api.php?amount=10';
+interface IProps {
+  setGameState: React.Dispatch<React.SetStateAction<EModes>>;
+  mode: EModes;
+  questionNumber: number;
+  setQuestionNumber: React.Dispatch<React.SetStateAction<number>>;
+  questionsCount: number;
+}
 
-const Quiz = () => {
-  // const fetchData = async () => {
-  //   const resp = await axios.get(API);
-  //   const data = resp.data.results;
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
+const Quiz: FC<IProps> = ({
+  setGameState,
+  mode,
+  questionNumber,
+  setQuestionNumber,
+  questionsCount,
+}) => {
   const [data, setData] = useState<null | IQuizResponse[]>(null);
   const [loading, setLoading] = useState(true);
-  const [questionNumber, setQuestionNumber] = useState(0);
+  // const [questionNumber, setQuestionNumber] = useState(0);
+  const [answer, setAnswer] = useState<null | string>(null);
+
+  const API = `https://opentdb.com/api.php?amount=${questionsCount}`;
+
+  // console.log(answer);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -38,18 +48,44 @@ const Quiz = () => {
     getUsers();
   }, []);
 
+  useEffect(() => {
+    if (answer && data) {
+      console.log(answer);
+      answer === data[questionNumber].correct_answer
+        ? alert('wygrana')
+        : alert('przegrana');
+    }
+    // kolejne pytanie po odp
+    if (questionsCount >= questionNumber) {
+      setQuestionNumber((prev) => prev + 1);
+    }
+    // questionNumber <= setQuestionNumber((prev) => prev + 1);
+  }, [answer]);
+
   console.log(data);
 
   return (
     <>
       {loading && <span>Loading</span>}
-      {data && <p>{data[0].category}</p>}
-      {data && <p>{data[0].correct_answer}</p>}
-      {data && <p>{data[0].difficulty}</p>}
-      {data && <p>{data[0].incorrect_answers}</p>}
-      {data && <p>{data[0].question}</p>}
-      {data && <p>{data[0].type}</p>}
-      {data && <p>{data[0].correct_answer}</p>}
+
+      {data && (
+        <>
+          <p>{data[questionNumber].category}</p>
+          <p>{data[questionNumber].question}</p>
+          <p>{data[questionNumber].difficulty}</p>
+          {/* <p>{data[questionNumber].correct_answer}</p> */}
+        </>
+      )}
+
+      {data && (
+        <QuizButtons
+          setAnswer={setAnswer}
+          answers={[
+            data[questionNumber].correct_answer,
+            ...data[questionNumber].incorrect_answers,
+          ]}
+        />
+      )}
     </>
   );
 };
