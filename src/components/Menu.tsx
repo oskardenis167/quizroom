@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 import '../styles/menu.scss';
 import MenuButton from './MenuButton';
 import { EModes } from './Enums/EModes';
+import { IoAdd, IoRemove } from 'react-icons/io5';
+import MenuQuestion from './MenuQuestion';
 
 interface IProps {
   setGameState: React.Dispatch<React.SetStateAction<EModes>>;
@@ -39,14 +41,12 @@ const Menu: FC<IProps> = ({
           value="Play"
         />
         {mode === EModes.init && (
-          <input
-            type="number"
-            value={questionsCount}
-            onChange={handleChangeQuestionsCount}
-            min={1}
-            max={20}
-            className="menu__item"
-          />
+          <>
+            <MenuQuestion
+              setQuestionsCount={setQuestionsCount}
+              questionsCount={questionsCount}
+            />
+          </>
         )}
         <MenuButton
           setGameState={setGameState}

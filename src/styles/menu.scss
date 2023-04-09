@@ -1,13 +1,15 @@
+@import 'variables';
+
 .menu {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30%;
+  width: $menu-width;
 
   &__item {
     display: block;
-    font-size: 50px;
+    font-size: $menu-font-size;
     font-family: sans-serif;
     padding: 25px;
     margin-top: 15px;
@@ -20,9 +22,73 @@
     color: #000;
     transition: 0.15s;
     background-color: #fff;
+
     &:hover {
       background-color: #000;
       color: #fff;
+      letter-spacing: 5px;
+    }
+
+    &:active {
+      letter-spacing: 15px;
     }
   }
+}
+
+.question {
+  position: relative;
+
+  &__input {
+    //
+  }
+
+  &__add,
+  &__minus {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: $question-button;
+    width: $question-button;
+    border: 5px solid black;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    font-size: $question-button-font-size;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #fff;
+    transition: font-size, 0.15s;
+
+    &:hover {
+      background-color: #000;
+      color: #fff;
+      font-size: $question-button-font-size + 15px;
+    }
+
+    &:active {
+      font-size: $question-button-font-size + 35px;
+    }
+  }
+
+  &__minus {
+    left: 25px;
+  }
+
+  &__add {
+    right: 25px;
+  }
+}
+
+//remove input controls
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Works for Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
 }

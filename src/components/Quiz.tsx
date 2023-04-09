@@ -25,7 +25,7 @@ const Quiz: FC<IProps> = ({
   // const [questionNumber, setQuestionNumber] = useState(0);
   const [answer, setAnswer] = useState<null | string>(null);
 
-  const API = `https://opentdb.com/api.php?amount=${questionsCount}&encode=url3986`;
+  const API = `https://opentdb.com/api.php?amount=${questionsCount}&category=9&&encode=url3986`;
 
   // console.log(answer);
 
@@ -61,7 +61,7 @@ const Quiz: FC<IProps> = ({
   //answer clicked
   useEffect(() => {
     if (answer && data) {
-      console.log(answer);
+      // console.log(answer);
       answer === data[questionNumber].correct_answer
         ? alert('wygrana')
         : alert('przegrana');

@@ -8,6 +8,7 @@ const Game = () => {
   const [gameState, setGameState] = useState(EModes.init); // zmienic na init
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questionsCount, setQuestionsCount] = useState(10);
+  const [category, setCategory] = useState('');
 
   const gameMode = (gameState: string) => {
     switch (gameState) {

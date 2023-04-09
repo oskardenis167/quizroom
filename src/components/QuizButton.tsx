@@ -10,10 +10,6 @@ const QuizButton: FC<IProps> = ({ value, setAnswer }) => {
     setAnswer(value);
   };
 
-  // console.log(escapeHtml(value));
-
-  console.log(value);
-
   return (
     <button onClick={handleQuizButton} className="quiz__button">
       {decodeURIComponent(value)}
