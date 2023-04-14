@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import QuizButton from './QuizButton';
-import { IProps } from './Interfaces/Answers';
+import { IProps } from './Interfaces/IAnswers';
 
 const QuizButtons: FC<IProps> = ({ answers, setAnswer }) => {
   const shuffleArray = (array: string[]) => {

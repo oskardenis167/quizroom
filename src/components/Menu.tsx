@@ -2,14 +2,15 @@ import React, { FC } from 'react';
 import '../styles/menu.scss';
 import MenuButton from './MenuButton';
 import { EModes } from './Enums/EModes';
-import { IoAdd, IoRemove } from 'react-icons/io5';
 import MenuQuestion from './MenuQuestion';
+import { ICategoryResponse } from './Interfaces/ICategoryResponse';
 
 interface IProps {
   setGameState: React.Dispatch<React.SetStateAction<EModes>>;
   mode: EModes;
   questionsCount?: number;
   setQuestionsCount?: React.Dispatch<React.SetStateAction<number>>;
+  category: ICategoryResponse[] | null;
 }
 
 const Menu: FC<IProps> = ({
@@ -17,7 +18,24 @@ const Menu: FC<IProps> = ({
   mode,
   questionsCount,
   setQuestionsCount,
+  category,
 }) => {
+  const createOptions = () => {
+    if (category && category.length > 0) {
+      const options = category.map((item) => (
+        <option key={item.id}>{item.name}</option>
+      ));
+      return (
+        <select className="menu__item">
+          <option selected>Random</option>
+          {...options}
+        </select>
+      );
+    } else {
+      alert('connection error');
+    }
+  };
+
   const menuSelect = () => {
     if (mode === EModes.init) {
       return (
@@ -27,15 +45,17 @@ const Menu: FC<IProps> = ({
             mode={EModes.play}
             value="Play"
           />
+          {createOptions()}
           <MenuQuestion
             setQuestionsCount={setQuestionsCount}
             questionsCount={questionsCount}
           />
-          {/* <MenuButton
+
+          <MenuButton
             setGameState={setGameState}
             mode={EModes.scores}
             value="Scores"
-          /> */}
+          />
         </>
       );
       // } else if (mode === EModes.paused) {
