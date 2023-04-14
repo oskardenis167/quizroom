@@ -6,7 +6,6 @@ import axios from 'axios';
 import Menu from './Menu';
 import Quiz from './Quiz';
 import { EModes } from './Enums/EModes';
-import ICategoryResponse from './Interfaces/ICategoryResponse';
 import { useAPI, TApiResponse } from './hooks/useAPI';
 import Loading from './Loading';
 
@@ -19,7 +18,7 @@ const Game = () => {
   const [questionsCount, setQuestionsCount] = useState(10);
 
   const categoryAPI = 'https://opentdb.com/api_category.php';
-  const data: TApiResponse = useAPI(categoryAPI);
+  const dataAPI: TApiResponse = useAPI(categoryAPI);
 
   const gameMode = (gameState: string) => {
     switch (gameState) {
@@ -32,12 +31,10 @@ const Game = () => {
               mode={EModes.init}
               questionsCount={questionsCount}
               setQuestionsCount={setQuestionsCount}
-              category={data.data.trivia_categories}
+              category={dataAPI.data.trivia_categories}
             />
           </>
         );
-      // case EModes.paused:
-      //   return <Menu setGameState={setGameState} mode={EModes.paused} />;
       case EModes.play:
         return (
           <Quiz
@@ -54,7 +51,7 @@ const Game = () => {
     }
   };
 
-  return <>{data.loading ? <Loading /> : gameMode(gameState)}</>;
+  return <>{dataAPI.loading ? <Loading /> : gameMode(gameState)}</>;
 };
 
 export default Game;

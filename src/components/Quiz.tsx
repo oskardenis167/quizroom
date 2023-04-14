@@ -7,6 +7,9 @@ import '../styles/quiz.scss';
 import Pause from './Pause';
 import QuizPoints from './QuizPoints';
 import QuizTime from './QuizTime';
+import { useAPI, TApiResponse } from './hooks/useAPI';
+import Loading from './Loading';
+import QuizText from './QuizText';
 
 interface IProps {
   setGameState: React.Dispatch<React.SetStateAction<EModes>>;
@@ -31,8 +34,7 @@ const Quiz: FC<IProps> = ({
   const [points, setPoints] = useState(0);
 
   const API = `https://opentdb.com/api.php?amount=${questionsCount}&category=9&&encode=url3986`;
-
-  // console.log(answer);
+  const dataAPI: TApiResponse = useAPI(API);
 
   const handleEscClick = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
@@ -41,6 +43,18 @@ const Quiz: FC<IProps> = ({
   };
   // console.log(pause);
 
+  useEffect(() => {
+    window.addEventListener('keydown', handleEscClick);
+    return () => {
+      window.addEventListener('keydown', handleEscClick);
+    };
+  }, []);
+
+  if (!dataAPI.loading) {
+    console.log(dataAPI.data.results);
+  }
+
+  /*
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -63,12 +77,34 @@ const Quiz: FC<IProps> = ({
     };
     getUsers();
   }, []);
+  */
 
   //answer clicked
+  // useEffect(() => {
+  //   if (answer && data) {
+  //     // console.log(answer);
+  //     if (answer === data[questionNumber].correct_answer) {
+  //       alert('dobrze');
+  //       setPoints((prev) => prev + 1);
+  //     } else {
+  //       alert('zle');
+  //     }
+
+  //     setAnswer(null);
+
+  //     if (questionNumber === questionsCount - 1) {
+  //       alert('end');
+  //       setGameState(EModes.init);
+  //     } else {
+  //       setQuestionNumber((prev) => prev + 1);
+  //     }
+  //   }
+  // }, [answer]);
+
   useEffect(() => {
-    if (answer && data) {
+    if (answer && dataAPI) {
       // console.log(answer);
-      if (answer === data[questionNumber].correct_answer) {
+      if (answer === dataAPI.data.results[questionNumber].correct_answer) {
         alert('dobrze');
         setPoints((prev) => prev + 1);
       } else {
@@ -86,48 +122,52 @@ const Quiz: FC<IProps> = ({
     }
   }, [answer]);
 
-  // useEffect(() => {
-  //   console.log('xd');
-  // }, [questionNumber]);
+  const quizEl = () => {
+    const quizEl = (
+      <>
+        {dataAPI.loading ? (
+          <Loading />
+        ) : (
+          <>
+            <QuizText
+              type="question"
+              number={questionNumber + 1}
+              value={dataAPI.data.results[questionNumber].question}
+            />
+            <QuizText
+              type="category"
+              value={dataAPI.data.results[questionNumber].category}
+            />
+            <QuizText
+              type="difficulty"
+              additionalClass={dataAPI.data.results[questionNumber].difficulty}
+              value={dataAPI.data.results[questionNumber].difficulty}
+            />
+            <QuizButtons
+              setAnswer={setAnswer}
+              answers={[
+                dataAPI.data.results[questionNumber].correct_answer,
+                ...dataAPI.data.results[questionNumber].incorrect_answers,
+              ]}
+            />
+            <QuizPoints points={points} questionsCount={questionsCount} />
+            {pause && <Pause setPause={setPause} setGameState={setGameState} />}
 
-  const quizEl = (
-    <>
-      {loading && <span className="quiz__loading"></span>}
+            <QuizTime
+              pause={pause}
+              setAnswer={setAnswer}
+              answer={answer}
+              questionNumber={questionNumber}
+            />
+          </>
+        )}
+      </>
+    );
 
-      {data && (
-        <>
-          <p className="quiz__question">{`${
-            questionNumber + 1
-          }) ${decodeURIComponent(data[questionNumber].question)}`}</p>
-          <p className="quiz__category">
-            {decodeURIComponent(data[questionNumber].category)}
-          </p>
+    return quizEl;
+  };
 
-          <p className={`quiz__difficulty ${data[questionNumber].difficulty}`}>
-            {decodeURIComponent(data[questionNumber].difficulty)}
-          </p>
-          <QuizButtons
-            setAnswer={setAnswer}
-            answers={[
-              data[questionNumber].correct_answer,
-              ...data[questionNumber].incorrect_answers,
-            ]}
-          />
-          <QuizPoints points={points} questionsCount={questionsCount} />
-          {pause && <Pause setPause={setPause} setGameState={setGameState} />}
-
-          <QuizTime
-            pause={pause}
-            setAnswer={setAnswer}
-            answer={answer}
-            questionNumber={questionNumber}
-          />
-        </>
-      )}
-    </>
-  );
-
-  return <div className="quiz">{quizEl}</div>;
+  return <div className="quiz">{quizEl()}</div>;
 };
 
 export default Quiz;
