@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const QuizTime: FC<IProps> = ({ pause, setAnswer, answer, questionNumber }) => {
-  const startTime = 10;
+  const startTime = 60;
   const [questionTime, setQuestionTime] = useState(
     (questionNumber + 1) * startTime
   );

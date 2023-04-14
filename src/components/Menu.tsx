@@ -11,6 +11,7 @@ interface IProps {
   questionsCount?: number;
   setQuestionsCount?: React.Dispatch<React.SetStateAction<number>>;
   category: ICategoryResponse[] | null;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Menu: FC<IProps> = ({
@@ -19,15 +20,26 @@ const Menu: FC<IProps> = ({
   questionsCount,
   setQuestionsCount,
   category,
+  setSelectedCategory,
 }) => {
+  const handleChangeOption = (event: React.FormEvent<HTMLSelectElement>) => {
+    console.log(event.currentTarget.value);
+    setSelectedCategory(parseInt(event.currentTarget.value));
+  };
+
   const createOptions = () => {
     if (category && category.length > 0) {
       const options = category.map((item) => (
-        <option key={item.id}>{item.name}</option>
+        <option key={item.id} value={item.id}>
+          {item.name}
+        </option>
       ));
       return (
-        <select className="menu__item">
-          <option defaultValue="Random">Random</option>
+        <select
+          className="menu__item"
+          onChange={(event) => handleChangeOption(event)}
+        >
+          <option value={0}>Random</option>
           {...options}
         </select>
       );

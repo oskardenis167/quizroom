@@ -18,9 +18,6 @@ export const useAPI = (url: string): TApiResponse => {
   const getAPIData = async () => {
     setLoading(true);
     try {
-      // const apiResponse = await fetch(url);
-      // const json = await apiResponse.json();
-
       const data = await axios.get(url);
 
       setStatus(data.status);

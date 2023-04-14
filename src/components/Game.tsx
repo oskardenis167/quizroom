@@ -19,6 +19,7 @@ const Game = () => {
 
   const categoryAPI = 'https://opentdb.com/api_category.php';
   const dataAPI: TApiResponse = useAPI(categoryAPI);
+  const [selectedCategory, setSelectedCategory] = useState(0);
 
   const gameMode = (gameState: string) => {
     switch (gameState) {
@@ -32,6 +33,7 @@ const Game = () => {
               questionsCount={questionsCount}
               setQuestionsCount={setQuestionsCount}
               category={dataAPI.data.trivia_categories}
+              setSelectedCategory={setSelectedCategory}
             />
           </>
         );
@@ -43,6 +45,7 @@ const Game = () => {
             questionNumber={questionNumber}
             setQuestionNumber={setQuestionNumber}
             questionsCount={questionsCount}
+            selectedCategory={selectedCategory}
           />
         );
       default:

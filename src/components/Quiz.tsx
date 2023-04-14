@@ -1,7 +1,5 @@
-import axios, { AxiosError } from 'axios';
-import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { EModes } from './Enums/EModes';
-import IQuizResponse from './Interfaces/IQuizResponse';
 import QuizButtons from './QuizButtons';
 import '../styles/quiz.scss';
 import Pause from './Pause';
@@ -17,6 +15,7 @@ interface IProps {
   questionNumber: number;
   setQuestionNumber: React.Dispatch<React.SetStateAction<number>>;
   questionsCount: number;
+  selectedCategory: number;
 }
 
 const Quiz: FC<IProps> = ({
@@ -25,15 +24,17 @@ const Quiz: FC<IProps> = ({
   questionNumber,
   setQuestionNumber,
   questionsCount,
+  selectedCategory,
 }) => {
-  const [data, setData] = useState<null | IQuizResponse[]>(null);
-  const [loading, setLoading] = useState(true);
-  // const [questionNumber, setQuestionNumber] = useState(0);
   const [answer, setAnswer] = useState<null | string>(null);
   const [pause, setPause] = useState(false);
   const [points, setPoints] = useState(0);
 
-  const API = `https://opentdb.com/api.php?amount=${questionsCount}&category=9&&encode=url3986`;
+  const category =
+    selectedCategory !== 0 ? `&category=${selectedCategory}` : '';
+
+  const API = `https://opentdb.com/api.php?amount=${questionsCount}${category}&encode=url3986`;
+  console.log(API);
   const dataAPI: TApiResponse = useAPI(API);
 
   const handleEscClick = (event: KeyboardEvent) => {
@@ -41,7 +42,6 @@ const Quiz: FC<IProps> = ({
       setPause((prev) => !prev);
     }
   };
-  // console.log(pause);
 
   useEffect(() => {
     window.addEventListener('keydown', handleEscClick);
@@ -53,53 +53,6 @@ const Quiz: FC<IProps> = ({
   if (!dataAPI.loading) {
     console.log(dataAPI.data.results);
   }
-
-  /*
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const { data } = await axios.get(API);
-        setData(data.results);
-        window.addEventListener('keydown', handleEscClick);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('error message: ', error.message);
-          return error.message;
-        } else {
-          console.log('unexpected error: ', error);
-          return 'An unexpected error occurred';
-        }
-      } finally {
-        setLoading(false);
-      }
-
-      return () => window.addEventListener('keydown', handleEscClick);
-    };
-    getUsers();
-  }, []);
-  */
-
-  //answer clicked
-  // useEffect(() => {
-  //   if (answer && data) {
-  //     // console.log(answer);
-  //     if (answer === data[questionNumber].correct_answer) {
-  //       alert('dobrze');
-  //       setPoints((prev) => prev + 1);
-  //     } else {
-  //       alert('zle');
-  //     }
-
-  //     setAnswer(null);
-
-  //     if (questionNumber === questionsCount - 1) {
-  //       alert('end');
-  //       setGameState(EModes.init);
-  //     } else {
-  //       setQuestionNumber((prev) => prev + 1);
-  //     }
-  //   }
-  // }, [answer]);
 
   useEffect(() => {
     if (answer && dataAPI) {
