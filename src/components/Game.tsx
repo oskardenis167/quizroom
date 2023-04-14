@@ -1,40 +1,25 @@
+// NODE MODULES
 import React, { useEffect, useState } from 'react';
-import '../styles/game.scss';
+import axios from 'axios';
+
+// COMPONENTS
 import Menu from './Menu';
 import Quiz from './Quiz';
 import { EModes } from './Enums/EModes';
-import axios from 'axios';
-import { ICategoryResponse } from './Interfaces/ICategoryResponse';
+import ICategoryResponse from './Interfaces/ICategoryResponse';
+import { useAPI, TApiResponse } from './hooks/useAPI';
+import Loading from './Loading';
+
+// STYLES
+import '../styles/game.scss';
 
 const Game = () => {
   const [gameState, setGameState] = useState(EModes.init); // zmienic na init
   const [questionNumber, setQuestionNumber] = useState(0);
   const [questionsCount, setQuestionsCount] = useState(10);
-  const [category, setCategory] = useState<null | ICategoryResponse[]>(null);
-  const [loading, setLoading] = useState(true);
 
   const categoryAPI = 'https://opentdb.com/api_category.php';
-
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const { data } = await axios.get(categoryAPI);
-        setCategory(data.trivia_categories);
-        // console.log(data.trivia_categories);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('error message: ', error.message);
-          return error.message;
-        } else {
-          console.log('unexpected error: ', error);
-          return 'An unexpected error occurred';
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    getUsers();
-  }, []);
+  const data: TApiResponse = useAPI(categoryAPI);
 
   const gameMode = (gameState: string) => {
     switch (gameState) {
@@ -47,7 +32,7 @@ const Game = () => {
               mode={EModes.init}
               questionsCount={questionsCount}
               setQuestionsCount={setQuestionsCount}
-              category={category}
+              category={data.data.trivia_categories}
             />
           </>
         );
@@ -69,11 +54,7 @@ const Game = () => {
     }
   };
 
-  return (
-    <>
-      {loading ? <span className="quiz__loading"></span> : gameMode(gameState)}
-    </>
-  );
+  return <>{data.loading ? <Loading /> : gameMode(gameState)}</>;
 };
 
 export default Game;

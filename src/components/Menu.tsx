@@ -3,7 +3,7 @@ import '../styles/menu.scss';
 import MenuButton from './MenuButton';
 import { EModes } from './Enums/EModes';
 import MenuQuestion from './MenuQuestion';
-import { ICategoryResponse } from './Interfaces/ICategoryResponse';
+import ICategoryResponse from './Interfaces/ICategoryResponse';
 
 interface IProps {
   setGameState: React.Dispatch<React.SetStateAction<EModes>>;
@@ -27,7 +27,7 @@ const Menu: FC<IProps> = ({
       ));
       return (
         <select className="menu__item">
-          <option selected>Random</option>
+          <option defaultValue="Random">Random</option>
           {...options}
         </select>
       );

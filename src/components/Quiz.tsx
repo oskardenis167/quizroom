@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import React, { FC, PropsWithChildren, useEffect, useState } from 'react';
 import { EModes } from './Enums/EModes';
-import { IQuizResponse } from './Interfaces/IQuizResponse';
+import IQuizResponse from './Interfaces/IQuizResponse';
 import QuizButtons from './QuizButtons';
 import '../styles/quiz.scss';
 import Pause from './Pause';

@@ -1,4 +1,4 @@
-export interface IQuizResponse {
+export default interface IQuizResponse {
   category: string;
   correct_answer: string;
   difficulty: string;

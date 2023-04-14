@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import QuizButton from './QuizButton';
-import { IProps } from './Interfaces/IAnswers';
+import IAnswers from './Interfaces/IAnswers';
 
-const QuizButtons: FC<IProps> = ({ answers, setAnswer }) => {
+const QuizButtons: FC<IAnswers> = ({ answers, setAnswer }) => {
   const shuffleArray = (array: string[]) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
