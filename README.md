@@ -32,6 +32,8 @@ Currently working on:
 
 - ⚙ goob/bad answer animations
 - ⚙ tests
-- ⚙ improve menu navigations
+- ⚙ choose genre of questions
+- ⚙ choose type of questions
+- ⚙ choose level of questions
 
 Work on quizroom branch
